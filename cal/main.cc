@@ -2,10 +2,29 @@
 #include<stack>
 using std::stack;
 #define MAXSIZE 201
+int getval(char ch)
+{
+	if (ch == '*' || ch == '/')
+	{
+		return 1;
+	}
+	return 0;
+}
+int getconse(int f, int l, char ch)
+{
+	if (ch == '+')
+		return f + l;
+	if (ch == '-')
+		return f - l;
+	if (ch == '*')
+		return f*l;
+	if (ch == '/')
+		return f / l;
+}
 int main()
 {
 	stack<int>	snum;
-	stack<int>	sch;
+	stack<char>	sch;
 	char ch[MAXSIZE];
 	while (scanf_s("%s", ch, MAXSIZE) != EOF)
 	{
@@ -27,22 +46,24 @@ int main()
 			}
 			else
 			{
-				int tmpch = 0;
-				if (ch[i] == '*' || ch[i] == '/')
-				{
-					tmpch = 1;
-				}
-				else
-				{
-					tmpch = 0;
-				}
 				if (sch.empty())
-					sch.push(tmpch);
+					sch.push(ch[i]);
+				else if (getval(ch[i] > getval(sch.top())))
+				{
+					sch.push(ch[i]);
+				}
 				else
 				{
-
-				}
-			}
-		}
+					int num1 = snum.top();
+					snum.pop();
+					int num2 = snum.top();
+					snum.pop();
+					char ch1 = sch.top();
+					int cons = getconse(num2, num1, ch1);
+					snum.push(cons);
+					--i;
+				}//end else
+			}//end else
+		}//end for
 	}
 }
